@@ -31,6 +31,7 @@
             ];
 
             nativeBuildInputs = with pkgs; [ cmake git ];
+            buildInputs = with pkgs; [ fmt_11 ];
           };
         in rec {
           packages = {
@@ -51,9 +52,8 @@
 
             nativeBuildInputs = fluky.nativeBuildInputs ++ (with pkgs; [ clang-tools ]);
 
-            buildInputs = with pkgs; [
+            buildInputs = fluky.buildInputs ++ (with pkgs; [
               catch2_3
-              fmt_11
               gcc14
               gdb
               hotspot
@@ -62,7 +62,7 @@
               linuxPackages_latest.perf
               practrand-rng-test # for testing
               valgrind
-            ];
+            ]);
           };
         };
     };
