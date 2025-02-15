@@ -41,6 +41,8 @@ TEST_CASE("rng performance", "[performance]") {
     bench<fluky::romu_duo>(&b, "fluky::romu_duo");
     bench<fluky::romu_trio>(&b, "fluky::romu_trio");
     bench<fluky::sfc64>(&b, "fluky::sfc64");
+    bench<fluky::splitmix64>(&b, "fluky::splitmix64");
+    bench<fluky::wyrand>(&b, "fluky::wyrand");
     bench<fluky::xoshiro256ss>(&b, "fluky::xoshiro256**");
 }
 } // namespace

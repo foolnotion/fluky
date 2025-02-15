@@ -81,3 +81,15 @@ target_link_libraries(
     pcg64_dxsm PRIVATE
     fluky::fluky
 )
+
+add_executable(wyrand source/wyrand.cpp)
+target_link_libraries(
+    wyrand PRIVATE
+    fluky::fluky
+)
+
+add_executable(splitmix64 source/splitmix64.cpp)
+target_link_libraries(
+    splitmix64 PRIVATE
+    fluky::fluky
+)

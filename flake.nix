@@ -46,7 +46,6 @@
             });
           };
 
-
           devShells.default = stdenv_.mkDerivation {
             name = "fluky";
 

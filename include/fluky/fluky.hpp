@@ -7,6 +7,7 @@
 #include "pcg64_dxsm.hpp"
 #include "romu.hpp"
 #include "sfc64.hpp"
+#include "wyrand.hpp"
 #include "xoshiro256ss.hpp"
 
 #endif

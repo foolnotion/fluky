@@ -4,7 +4,7 @@
 #include <array>
 #include <cstdint>
 #include <limits>
-#include "detail/splitmix64.hpp"
+#include "splitmix64.hpp"
 
 namespace fluky {
 namespace romu_detail {
@@ -56,7 +56,7 @@ inline auto next<romu_quad_state>(romu_quad_state& state) -> romu_result_type {
 
 template<typename State>
 auto init_state(State& state, uint64_t seed) -> void {
-    for (auto& s : state) { s = detail::splitmix64(seed); }
+    for (auto& s : state) { s = splitmix64_detail::next(seed); }
     for (int i = 0; i < romu_init_default_rounds; ++i) {
         next<State>(state);
     }

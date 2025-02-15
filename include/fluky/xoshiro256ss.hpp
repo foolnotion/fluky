@@ -4,7 +4,7 @@
 #include <array>
 #include <cstdint>
 #include <limits>
-#include "detail/splitmix64.hpp"
+#include "splitmix64.hpp"
 
 namespace fluky {
 namespace xoshiro256ss_detail {
@@ -32,7 +32,7 @@ namespace xoshiro256ss_detail {
     static constexpr auto n = 64UL;
 
     inline auto init_state(xoshiro256ss_state& state, uint64_t seed) -> void {
-        for (auto& s : state) { s = detail::splitmix64(seed); }
+        for (auto& s : state) { s = splitmix64_detail::next(seed); }
     }
 
     inline auto next(xoshiro256ss_state& state) -> xoshiro256ss_result_type {
