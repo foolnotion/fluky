@@ -18,16 +18,16 @@ namespace xoshiro256ss_detail {
     static constexpr auto e = 45UL;
 
     static constexpr std::array short_jump = {
-        0X180EC6D33CFD0ABAUL,
-        0XD5A61266F0C9392CUL,
-        0XA9582618E03FC9AAUL,
-        0X39ABDC4529B1661CUL
+        UINT64_C(0X180EC6D33CFD0ABA),
+        UINT64_C(0XD5A61266F0C9392C),
+        UINT64_C(0XA9582618E03FC9AA),
+        UINT64_C(0X39ABDC4529B1661C)
     };
     static constexpr std::array long_jump {
-        0X76E15D3EFEFDCBBFUL,
-        0XC5004E441C522FB3UL,
-        0X77710069854EE241UL,
-        0X39109BB02ACBE635UL
+        UINT64_C(0X76E15D3EFEFDCBBF),
+        UINT64_C(0XC5004E441C522FB3),
+        UINT64_C(0X77710069854EE241),
+        UINT64_C(0X39109BB02ACBE635)
     };
     static constexpr auto n = 64UL;
 

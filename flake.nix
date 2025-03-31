@@ -53,15 +53,9 @@
 
             buildInputs = fluky.buildInputs ++ (with pkgs; [
               catch2_3
-              gcc14
-              gdb
-              hotspot
               hyperfine
-              nanobench
-              linuxPackages_latest.perf
               practrand-rng-test # for testing
-              valgrind
-            ]);
+            ]) ++ (with pkgs; if pkgs.stdenv.isLinux then [ gcc14 gdb hotspot nanobench linuxPackages_latest.perf valgrind ] else [] );
           };
         };
     };

@@ -1,5 +1,5 @@
-#ifndef FLUKY_DETAIL_SPLITMIX64_HPP
-#define FLUKY_DETAIL_SPLITMIX64_HPP
+#ifndef FLUKY_SPLITMIX64_RANDOM_HPP
+#define FLUKY_SPLITMIX64_RANDOM_HPP
 
 #include <cstdint>
 #include <limits>
@@ -17,9 +17,11 @@ namespace splitmix64_detail {
     inline auto next(splitmix64_state& state) -> splitmix64_result_type {
          state += a;
          auto z = state;
+         // NOLINTBEGIN(*-magic-numbers)
          z = (z ^ (z >> 30U)) * b;
          z = (z ^ (z >> 27U)) * c;
          return z ^ (z >> 31U);
+         // NOLINTEND(*-magic-numbers)
     }
 
     inline auto init_state(splitmix64_state& state, uint64_t seed) -> void {

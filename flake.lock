@@ -5,11 +5,11 @@
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
-        "lastModified": 1738453229,
-        "narHash": "sha256-7H9XgNiGLKN1G1CgRh0vUL4AheZSYzPm+zmZ7vxbJdo=",
+        "lastModified": 1741352980,
+        "narHash": "sha256-+u2UunDA4Cl5Fci3m7S643HzKmIDAe+fiXrLqYsR2fs=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "32ea77a06711b758da0ad9bd6a844c5740a87abd",
+        "rev": "f4330d22f1c5d2ba72d3d22df5597d123fdb60a9",
         "type": "github"
       },
       "original": {
@@ -25,11 +25,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1739309249,
-        "narHash": "sha256-NBnGQO6v35dVEhYYJMP3Yfm6b04uqTNYP+4iixvSyZQ=",
+        "lastModified": 1741118343,
+        "narHash": "sha256-dnPg2LwAs8DQrCIEXksWa6kfISs4k973Ecd6G41ZYbs=",
         "owner": "foolnotion",
         "repo": "nur-pkg",
-        "rev": "cea1376ed6c9b681e4416f3b1525993296263ab9",
+        "rev": "a0a43ee03d4c315ad4828bc6420cbb714878ab43",
         "type": "github"
       },
       "original": {
@@ -40,11 +40,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1739173192,
-        "narHash": "sha256-kENgMmze4a8E8zfCWI00U5ZuqA1CpQWYrYJCOgDEPjQ=",
+        "lastModified": 1742117732,
+        "narHash": "sha256-mBFJFaSZopNdd2nf3By6NLjleEHyOG1bWVsd/gvKThc=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "b07de9bca12f439fd9013c0c2924012c1bde74de",
+        "rev": "e008b6dcdac455857c7440053a0b83a24834167b",
         "type": "github"
       },
       "original": {
@@ -56,14 +56,17 @@
     },
     "nixpkgs-lib": {
       "locked": {
-        "lastModified": 1738452942,
-        "narHash": "sha256-vJzFZGaCpnmo7I6i416HaBLpC+hvcURh/BQwROcGIp8=",
-        "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/072a6db25e947df2f31aab9eccd0ab75d5b2da11.tar.gz"
+        "lastModified": 1740877520,
+        "narHash": "sha256-oiwv/ZK/2FhGxrCkQkB83i7GnWXPPLzoqFHpDD3uYpk=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "147dee35aab2193b174e4c0868bd80ead5ce755c",
+        "type": "github"
       },
       "original": {
-        "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/072a6db25e947df2f31aab9eccd0ab75d5b2da11.tar.gz"
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
       }
     },
     "root": {

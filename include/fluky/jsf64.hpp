@@ -1,5 +1,5 @@
-#ifndef FLUKY_jsf64_RANDOM_HPP
-#define FLUKY_jsf64_RANDOM_HPP
+#ifndef FLUKY_JSF64_RANDOM_HPP
+#define FLUKY_JSF64_RANDOM_HPP
 
 #include <array>
 #include <cstdint>
