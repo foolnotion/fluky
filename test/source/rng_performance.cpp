@@ -1,4 +1,3 @@
-#include <fmt/core.h>
 #include <catch2/catch_test_macros.hpp>
 #include <nanobench.h>
 #include <random>

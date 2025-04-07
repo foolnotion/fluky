@@ -34,9 +34,6 @@ target_include_directories(
 
 target_compile_features(fluky_fluky INTERFACE cxx_std_20)
 
-find_package(fmt REQUIRED)
-target_link_libraries(fluky_fluky INTERFACE fmt::fmt)
-
 # ---- Install rules ----
 
 if(NOT CMAKE_SKIP_INSTALL_RULES)

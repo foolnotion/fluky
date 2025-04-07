@@ -9,7 +9,7 @@
   };
 
   outputs = inputs @{ self, flake-parts, foolnotion, nixpkgs }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
+    flake-parts.lib.mkFlake { inherit inputs; } rec {
       systems = [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
 
       perSystem = { pkgs, system, ... }:
@@ -31,9 +31,11 @@
             ];
 
             nativeBuildInputs = with pkgs; [ cmake git ];
-            buildInputs = with pkgs; [ fmt_11 ];
           };
-        in rec {
+
+          enableTesting = true;
+        in
+        rec {
           packages = {
             default = fluky.overrideAttrs (old: {
               cmakeFlags = old.cmakeFlags ++ [
@@ -51,11 +53,9 @@
 
             nativeBuildInputs = fluky.nativeBuildInputs ++ (with pkgs; [ clang-tools ]);
 
-            buildInputs = fluky.buildInputs ++ (with pkgs; [
-              catch2_3
-              hyperfine
-              practrand-rng-test # for testing
-            ]) ++ (with pkgs; if pkgs.stdenv.isLinux then [ gcc14 gdb hotspot nanobench linuxPackages_latest.perf valgrind ] else [] );
+            buildInputs = fluky.buildInputs
+              ++ (with pkgs; pkgs.lib.optionals pkgs.stdenv.isLinux [ gcc14 gdb hotspot linuxPackages_latest.perf valgrind ])
+              ++ (with pkgs; pkgs.lib.optionals enableTesting [ catch2_3 hyperfine practrand-rng-test nanobench ]);
           };
         };
     };

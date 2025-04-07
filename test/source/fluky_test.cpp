@@ -1,6 +1,6 @@
 #include "fluky/fluky.hpp"
 
-#include <fmt/core.h>
+#include <iostream>
 #include <catch2/catch_test_macros.hpp>
 
 namespace fluky::test {
@@ -9,7 +9,7 @@ namespace {
 
     auto test_rng(auto&& rng) {
         for (auto i = 0; i < 4; ++i) {
-            fmt::print("{}\n", rng());
+            std::cout << rng() << "\n";
         }
     }
 } // namespace
@@ -21,18 +21,18 @@ TEST_CASE("romu", "[library]")
 }
 
 TEST_CASE("jsf", "[library]") {
-    fmt::print("{}\n", "jsf64");
+    std::cout << "jsf64\n";
     test_rng(fluky::jsf64{seed});
 }
 
 TEST_CASE("xoshiro256ss", "[library]") {
-    fmt::print("{}\n", "xoshiro256ss");
+    std::cout << "xoshiro256ss\n";
     test_rng(fluky::xoshiro256ss{seed});
 }
 
 TEST_CASE("sfc64", "[library]")
 {
-    fmt::print("{}\n", "sfc64");
+    std::cout << "sfc64\n";
     test_rng(fluky::sfc64{seed});
 }
 
