@@ -83,8 +83,8 @@ public:
     }
     ~xoshiro256ss() noexcept = default;
 
-    xoshiro256ss(xoshiro256ss const&) = delete;
-    auto operator=(xoshiro256ss const&) -> xoshiro256ss& = delete;
+    xoshiro256ss(xoshiro256ss const&) = default;
+    auto operator=(xoshiro256ss const&) -> xoshiro256ss& = default;
 
     xoshiro256ss(xoshiro256ss&&) = default;
     auto operator=(xoshiro256ss&&) noexcept -> xoshiro256ss& = default;
@@ -95,6 +95,12 @@ public:
 
     auto jump() { xoshiro256ss_detail::jump(state_, xoshiro256ss_detail::short_jump); }
     auto long_jump() { xoshiro256ss_detail::jump(state_, xoshiro256ss_detail::long_jump); }
+
+    auto fork() -> xoshiro256ss {
+        auto copy = *this;
+        jump();
+        return copy;
+    }
 };
 } // namespace fluky
 
