@@ -27,6 +27,10 @@ namespace splitmix64_detail {
     inline auto init_state(splitmix64_state& state, uint64_t seed) -> void {
         state = seed;
     }
+
+    inline auto advance(splitmix64_state& state, uint64_t n) -> void {
+        state += n * a;
+    }
 } // namespace splitmix64_detail
 
 class splitmix64 final {
@@ -52,6 +56,13 @@ public:
     auto operator()() -> result_type {
         return splitmix64_detail::next(state_);
     }
+
+    auto jump()      -> void { splitmix64_detail::advance(state_, uint64_t{1} << 32); }
+    auto long_jump() -> void { splitmix64_detail::advance(state_, uint64_t{1} << 48); }
+    auto advance(uint64_t n) -> void { splitmix64_detail::advance(state_, n); }
+
+    [[nodiscard]] auto state() const noexcept -> uint64_t { return state_; }
+    auto set_state(uint64_t s) noexcept -> void { state_ = s; }
 };
 } // namespace fluky
 

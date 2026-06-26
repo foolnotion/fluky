@@ -87,6 +87,9 @@ public:
     auto operator()() {
         return romu_detail::next(state_);
     }
+
+    [[nodiscard]] auto state() const noexcept -> State const& { return state_; }
+    auto set_state(State const& s) noexcept -> void { state_ = s; }
 };
 
 using romu_duo  = romu<romu_detail::romu_duo_state>;

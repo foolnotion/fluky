@@ -65,6 +65,9 @@ public:
     auto operator()() -> result_type {
         return sfc64_detail::next(state_);
     }
+
+    [[nodiscard]] auto state() const noexcept -> sfc64_detail::sfc64_state const& { return state_; }
+    auto set_state(sfc64_detail::sfc64_state const& s) noexcept -> void { state_ = s; }
 };
 }  // namespace fluky
 

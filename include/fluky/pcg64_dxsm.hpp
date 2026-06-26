@@ -15,6 +15,7 @@ namespace pcg64_dxsm_detail {
     static constexpr auto a = 64UL;
     static constexpr auto b = 32UL;
     static constexpr auto c = 48UL;
+    static constexpr uint128_t multiplier{15750249268501108917ULL};
 
     struct pcg64_dxsm_state {
         uint128_t s;
@@ -22,13 +23,12 @@ namespace pcg64_dxsm_detail {
     };
 
     inline auto next(pcg64_dxsm_state& state) -> pcg64_dxsm_result_type {
-        constexpr auto mul = 15750249268501108917ULL;
         auto const s = state.s;
-        state.s = s * mul + state.i;
+        state.s = s * multiplier + state.i;
         auto hi = static_cast<uint64_t>(s >> a);
         auto lo = static_cast<uint64_t>(s | 1U);
         hi ^= hi >> b;
-        hi *= mul;
+        hi *= static_cast<uint64_t>(multiplier);
         hi ^= hi >> c;
         hi *= lo;
         return hi;
@@ -40,6 +40,25 @@ namespace pcg64_dxsm_detail {
         state.i = (state.i << 1U) | 1U;
         state.s += state.i;
         next(state);
+    }
+
+    inline auto lcg_advance(uint128_t state, uint128_t delta, uint128_t cur_mult, uint128_t cur_plus) -> uint128_t {
+        uint128_t acc_mult{1};
+        uint128_t acc_plus{0};
+        while (delta > 0) {
+            if (delta & 1) {
+                acc_mult *= cur_mult;
+                acc_plus = acc_plus * cur_mult + cur_plus;
+            }
+            cur_plus  = (cur_mult + 1) * cur_plus;
+            cur_mult *= cur_mult;
+            delta >>= 1;
+        }
+        return acc_mult * state + acc_plus;
+    }
+
+    inline auto advance(pcg64_dxsm_state& state, uint128_t n) -> void {
+        state.s = lcg_advance(state.s, n, multiplier, state.i);
     }
 } // namespace pcg64_dxsm_detail
 
@@ -66,6 +85,13 @@ public:
     auto operator()() {
         return pcg64_dxsm_detail::next(state_);
     }
+
+    auto jump()      -> void { pcg64_dxsm_detail::advance(state_, uint128_t{1} << 64); }
+    auto long_jump() -> void { pcg64_dxsm_detail::advance(state_, uint128_t{1} << 96); }
+    auto advance(uint128_t n) -> void { pcg64_dxsm_detail::advance(state_, n); }
+
+    [[nodiscard]] auto state() const noexcept -> pcg64_dxsm_detail::pcg64_dxsm_state const& { return state_; }
+    auto set_state(pcg64_dxsm_detail::pcg64_dxsm_state const& s) noexcept -> void { state_ = s; }
 };
 } // namespace fluky
 

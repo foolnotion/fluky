@@ -59,6 +59,9 @@ public:
     auto operator()() -> result_type {
         return jsf64_detail::next(state_);
     }
+
+    [[nodiscard]] auto state() const noexcept -> jsf64_detail::jsf64_state const& { return state_; }
+    auto set_state(jsf64_detail::jsf64_state const& s) noexcept -> void { state_ = s; }
 };
 } // namespace fluky
 

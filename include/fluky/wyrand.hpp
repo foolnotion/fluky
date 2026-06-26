@@ -13,15 +13,20 @@ namespace wyrand_detail {
 	using wyrand_state = uint64_t;
 
 	std::size_t constexpr digits = std::numeric_limits<uint64_t>::digits;
+	static constexpr uint64_t inc = UINT64_C(0xA0761D6478BD642F);
 
 	inline auto next(wyrand_state& state) -> wyrand_result_type {
-	    state += UINT64_C(0xA0761D6478BD642F);
+	    state += inc;
 	    auto t = static_cast<uint128_t>(state) * (state ^ UINT64_C(0xE7037ED1A0B428DB));
 	    return static_cast<uint64_t>((t >> digits) ^ t);
 	}
 
 	inline auto init_state(wyrand_state& state, uint64_t seed) -> void {
 	    state = seed;
+	}
+
+	inline auto advance(wyrand_state& state, uint64_t n) -> void {
+	    state += n * inc;
 	}
 } // namespace wyrand_detail
 
@@ -48,6 +53,13 @@ public:
     auto operator()() -> result_type {
 		return wyrand_detail::next(state_);
     }
+
+    auto jump()      -> void { wyrand_detail::advance(state_, uint64_t{1} << 32); }
+    auto long_jump() -> void { wyrand_detail::advance(state_, uint64_t{1} << 48); }
+    auto advance(uint64_t n) -> void { wyrand_detail::advance(state_, n); }
+
+    [[nodiscard]] auto state() const noexcept -> uint64_t { return state_; }
+    auto set_state(uint64_t s) noexcept -> void { state_ = s; }
 };
 } // namespace fluky
 

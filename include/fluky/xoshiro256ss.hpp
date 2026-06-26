@@ -101,6 +101,9 @@ public:
         jump();
         return copy;
     }
+
+    [[nodiscard]] auto state() const noexcept -> xoshiro256ss_detail::xoshiro256ss_state const& { return state_; }
+    auto set_state(xoshiro256ss_detail::xoshiro256ss_state const& s) noexcept -> void { state_ = s; }
 };
 } // namespace fluky
 
