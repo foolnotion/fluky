@@ -361,6 +361,17 @@ TEST_CASE("jump equivalence: squares64", "[jump]") {
     for (auto i = 0; i < 4; ++i) { REQUIRE(rng1() == rng2()); }
 }
 
+TEST_CASE("jump() equals advance(2^32): squares64", "[jump]") {
+    // jump() is defined as advance(1<<32); verify they produce the same state
+    fluky::squares64 rng1{seed};
+    fluky::squares64 rng2{seed};
+
+    rng1.jump();
+    rng2.advance(uint64_t{1} << 32);
+
+    for (auto i = 0; i < 4; ++i) { REQUIRE(rng1() == rng2()); }
+}
+
 TEST_CASE("long_jump determinism: squares64", "[jump]") {
     fluky::squares64 rng1{seed};
     fluky::squares64 rng2{seed};

@@ -25,11 +25,12 @@ concept jumpable_rng = rng<Rng> && requires(Rng r) {
     r.long_jump();
 };
 
-// Has advance(n): fast-forward by an arbitrary number of steps.
-// Strictly stronger than jumpable_rng — covers additive-state and LCG
-// generators but not polynomial-based ones like xoshiro256ss.
+// Has advance(n): fast-forward by an arbitrary number of steps in O(log N)
+// or better. Subsumes jumpable_rng — every advanceable generator also has
+// fixed-period jump() / long_jump(). Does not cover polynomial-based
+// generators like xoshiro256ss that lack a general fast-forward algorithm.
 template<typename Rng>
-concept advanceable_rng = rng<Rng> && requires(Rng r, uint64_t n) {
+concept advanceable_rng = jumpable_rng<Rng> && requires(Rng r, uint64_t n) {
     r.advance(n);
 };
 

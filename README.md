@@ -11,8 +11,10 @@ _fluky_ is a small, header-only C++20 library of 64-bit pseudo-random number gen
 | `romu` | Rotate-Multiply PRNG | https://www.romu-random.org/ |
 | `sfc64` | Small Fast Chaotic PRNG | https://pracrand.sourceforge.net/RNG_engines.txt |
 | `splitmix64` | Splittable PRNG | http://dx.doi.org/10.1145/2714064.2660195 |
+| `squares64` | Counter-based PRNG (4-round multiply-and-swap) | https://arxiv.org/abs/2004.06278 |
 | `wyrand` | PRNG used by Wyhash | https://github.com/wangyi-fudan/wyhash |
-| `xoshiro256ss` | Xor/Shift/Rotate PRNG (the all-purpose ** version) | https://dsiutils.di.unimi.it |
+| `xoroshiro128pp` | Xor/Rotate/Shift/Rotate PRNG (128-bit ++ version) | https://prng.di.unimi.it |
+| `xoshiro256ss` | Xor/Shift/Rotate PRNG (256-bit ** version) | https://prng.di.unimi.it |
 
 ### Acknowledgements
 
