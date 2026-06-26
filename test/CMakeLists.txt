@@ -93,3 +93,15 @@ target_link_libraries(
     splitmix64 PRIVATE
     fluky::fluky
 )
+
+add_executable(xoroshiro128pp source/xoroshiro128pp.cpp)
+target_link_libraries(
+    xoroshiro128pp PRIVATE
+    fluky::fluky
+)
+
+add_executable(squares64 source/squares64.cpp)
+target_link_libraries(
+    squares64 PRIVATE
+    fluky::fluky
+)

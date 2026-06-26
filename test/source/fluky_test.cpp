@@ -132,15 +132,70 @@ TEST_CASE("state round-trip: wyrand", "[state]") {
 }
 #endif
 
-// ---- jumpable_rng concept static assertions ----
+// ---- concept static assertions ----
+
+// rng: all generators satisfy the URBG contract
+static_assert(fluky::rng<fluky::xoshiro256ss>);
+static_assert(fluky::rng<fluky::xoroshiro128pp>);
+static_assert(fluky::rng<fluky::splitmix64>);
+static_assert(fluky::rng<fluky::squares64>);
+static_assert(fluky::rng<fluky::jsf64>);
+static_assert(fluky::rng<fluky::sfc64>);
+static_assert(fluky::rng<fluky::romu_duo>);
+#ifdef __SIZEOF_INT128__
+static_assert(fluky::rng<fluky::pcg64_dxsm>);
+static_assert(fluky::rng<fluky::wyrand>);
+#endif
+
+// stateful_rng: all generators expose state() / set_state()
+static_assert(fluky::stateful_rng<fluky::xoshiro256ss>);
+static_assert(fluky::stateful_rng<fluky::xoroshiro128pp>);
+static_assert(fluky::stateful_rng<fluky::splitmix64>);
+static_assert(fluky::stateful_rng<fluky::squares64>);
+static_assert(fluky::stateful_rng<fluky::jsf64>);
+static_assert(fluky::stateful_rng<fluky::sfc64>);
+static_assert(fluky::stateful_rng<fluky::romu_duo>);
+#ifdef __SIZEOF_INT128__
+static_assert(fluky::stateful_rng<fluky::pcg64_dxsm>);
+static_assert(fluky::stateful_rng<fluky::wyrand>);
+#endif
+
+// jumpable_rng: fixed-period stream partition via jump() / long_jump()
 static_assert(fluky::jumpable_rng<fluky::xoshiro256ss>);
+static_assert(fluky::jumpable_rng<fluky::xoroshiro128pp>);
 static_assert(fluky::jumpable_rng<fluky::splitmix64>);
+static_assert(fluky::jumpable_rng<fluky::squares64>);
 static_assert(!fluky::jumpable_rng<fluky::jsf64>);
 static_assert(!fluky::jumpable_rng<fluky::sfc64>);
 static_assert(!fluky::jumpable_rng<fluky::romu_duo>);
 #ifdef __SIZEOF_INT128__
 static_assert(fluky::jumpable_rng<fluky::pcg64_dxsm>);
 static_assert(fluky::jumpable_rng<fluky::wyrand>);
+#endif
+
+// advanceable_rng: arbitrary fast-forward via advance(n)
+// Note: xoshiro256ss / xoroshiro128pp are jumpable but NOT advanceable —
+// their jump is polynomial-based, not a simple counter increment.
+static_assert(!fluky::advanceable_rng<fluky::xoshiro256ss>);
+static_assert(!fluky::advanceable_rng<fluky::xoroshiro128pp>);
+static_assert(fluky::advanceable_rng<fluky::splitmix64>);
+static_assert(fluky::advanceable_rng<fluky::squares64>);
+static_assert(!fluky::advanceable_rng<fluky::jsf64>);
+static_assert(!fluky::advanceable_rng<fluky::sfc64>);
+static_assert(!fluky::advanceable_rng<fluky::romu_duo>);
+#ifdef __SIZEOF_INT128__
+static_assert(fluky::advanceable_rng<fluky::pcg64_dxsm>);
+static_assert(fluky::advanceable_rng<fluky::wyrand>);
+#endif
+
+// forkable_rng: atomic copy-and-jump for spawning parallel streams
+// Only generators with copy semantics and fork() qualify.
+static_assert(fluky::forkable_rng<fluky::xoshiro256ss>);
+static_assert(fluky::forkable_rng<fluky::xoroshiro128pp>);
+static_assert(!fluky::forkable_rng<fluky::splitmix64>);
+static_assert(!fluky::forkable_rng<fluky::jsf64>);
+#ifdef __SIZEOF_INT128__
+static_assert(!fluky::forkable_rng<fluky::pcg64_dxsm>);
 #endif
 
 // ---- jump() equivalence tests (advance(n) vs n operator() calls) ----
@@ -236,5 +291,96 @@ TEST_CASE("long_jump determinism: wyrand", "[jump]") {
     REQUIRE(rng1() != rng3());
 }
 #endif
+
+// ---- xoroshiro128pp ----
+
+TEST_CASE("xoroshiro128pp", "[library]") {
+    test_rng(fluky::xoroshiro128pp{seed});
+}
+
+TEST_CASE("xoroshiro128pp fork produces non-overlapping streams", "[library]") {
+    fluky::xoroshiro128pp rng{seed};
+    auto a = rng.fork();
+    auto b = rng.fork();
+
+    REQUIRE(a() != b());
+
+    fluky::xoroshiro128pp copy{a};
+    REQUIRE(a() == copy());
+    REQUIRE(a() == copy());
+}
+
+TEST_CASE("state round-trip: xoroshiro128pp", "[state]") {
+    fluky::xoroshiro128pp rng{42};
+    state_round_trip_test(rng);
+}
+
+TEST_CASE("jump equivalence: xoroshiro128pp", "[jump]") {
+    fluky::xoroshiro128pp rng1{seed};
+    fluky::xoroshiro128pp rng2{seed};
+
+    rng1.jump();
+    rng2.jump();
+
+    for (auto i = 0; i < 4; ++i) { REQUIRE(rng1() == rng2()); }
+
+    fluky::xoroshiro128pp rng3{seed};
+    REQUIRE(rng1() != rng3());
+}
+
+TEST_CASE("long_jump determinism: xoroshiro128pp", "[jump]") {
+    fluky::xoroshiro128pp rng1{seed};
+    fluky::xoroshiro128pp rng2{seed};
+    fluky::xoroshiro128pp rng3{seed};
+
+    rng1.long_jump();
+    rng2.long_jump();
+    for (auto i = 0; i < 4; ++i) { REQUIRE(rng1() == rng2()); }
+    REQUIRE(rng1() != rng3());
+}
+
+// ---- squares64 ----
+
+TEST_CASE("squares64", "[library]") {
+    test_rng(fluky::squares64{seed});
+}
+
+TEST_CASE("state round-trip: squares64", "[state]") {
+    fluky::squares64 rng{42};
+    state_round_trip_test(rng);
+}
+
+TEST_CASE("jump equivalence: squares64", "[jump]") {
+    constexpr auto steps = 256U;
+    fluky::squares64 rng1{seed};
+    fluky::squares64 rng2{seed};
+
+    rng1.advance(steps);
+    for (auto i = 0U; i < steps; ++i) { rng2(); }
+
+    for (auto i = 0; i < 4; ++i) { REQUIRE(rng1() == rng2()); }
+}
+
+TEST_CASE("jump() equals advance(2^32): squares64", "[jump]") {
+    // jump() is defined as advance(1<<32); verify they produce the same state
+    fluky::squares64 rng1{seed};
+    fluky::squares64 rng2{seed};
+
+    rng1.jump();
+    rng2.advance(uint64_t{1} << 32);
+
+    for (auto i = 0; i < 4; ++i) { REQUIRE(rng1() == rng2()); }
+}
+
+TEST_CASE("long_jump determinism: squares64", "[jump]") {
+    fluky::squares64 rng1{seed};
+    fluky::squares64 rng2{seed};
+    fluky::squares64 rng3{seed};
+
+    rng1.long_jump();
+    rng2.long_jump();
+    for (auto i = 0; i < 4; ++i) { REQUIRE(rng1() == rng2()); }
+    REQUIRE(rng1() != rng3());
+}
 
 }  // namespace fluky::test
