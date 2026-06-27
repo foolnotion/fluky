@@ -57,8 +57,8 @@ public:
         return splitmix64_detail::next(state_);
     }
 
-    auto jump()      -> void { splitmix64_detail::advance(state_, uint64_t{1} << 32); }
-    auto long_jump() -> void { splitmix64_detail::advance(state_, uint64_t{1} << 48); }
+    auto jump()      -> void { splitmix64_detail::advance(state_, uint64_t{1} << 32U); } // NOLINT(hicpp-signed-bitwise,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    auto long_jump() -> void { splitmix64_detail::advance(state_, uint64_t{1} << 48U); } // NOLINT(hicpp-signed-bitwise,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     auto advance(uint64_t n) -> void { splitmix64_detail::advance(state_, n); }
 
     [[nodiscard]] auto state() const noexcept -> uint64_t { return state_; }

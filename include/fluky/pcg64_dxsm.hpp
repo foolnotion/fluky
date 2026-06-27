@@ -24,7 +24,7 @@ namespace pcg64_dxsm_detail {
 
     inline auto next(pcg64_dxsm_state& state) -> pcg64_dxsm_result_type {
         auto const s = state.s;
-        state.s = s * multiplier + state.i;
+        state.s = (s * multiplier) + state.i;
         auto hi = static_cast<uint64_t>(s >> a);
         auto lo = static_cast<uint64_t>(s | 1U);
         hi ^= hi >> b;
@@ -42,19 +42,20 @@ namespace pcg64_dxsm_detail {
         next(state);
     }
 
+    // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
     inline auto lcg_advance(uint128_t state, uint128_t delta, uint128_t cur_mult, uint128_t cur_plus) -> uint128_t {
         uint128_t acc_mult{1};
         uint128_t acc_plus{0};
         while (delta > 0) {
-            if (delta & 1) {
+            if ((delta & uint128_t{1}) != 0) { // NOLINT(hicpp-signed-bitwise)
                 acc_mult *= cur_mult;
-                acc_plus = acc_plus * cur_mult + cur_plus;
+                acc_plus = (acc_plus * cur_mult) + cur_plus;
             }
             cur_plus  = (cur_mult + 1) * cur_plus;
             cur_mult *= cur_mult;
-            delta >>= 1;
+            delta >>= 1U; // NOLINT(hicpp-signed-bitwise)
         }
-        return acc_mult * state + acc_plus;
+        return (acc_mult * state) + acc_plus;
     }
 
     inline auto advance(pcg64_dxsm_state& state, uint128_t n) -> void {
@@ -86,8 +87,8 @@ public:
         return pcg64_dxsm_detail::next(state_);
     }
 
-    auto jump()      -> void { pcg64_dxsm_detail::advance(state_, uint128_t{1} << 64); }
-    auto long_jump() -> void { pcg64_dxsm_detail::advance(state_, uint128_t{1} << 96); }
+    auto jump()      -> void { pcg64_dxsm_detail::advance(state_, uint128_t{1} << 64U); } // NOLINT(hicpp-signed-bitwise,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
+    auto long_jump() -> void { pcg64_dxsm_detail::advance(state_, uint128_t{1} << 96U); } // NOLINT(hicpp-signed-bitwise,cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     auto advance(uint128_t n) -> void { pcg64_dxsm_detail::advance(state_, n); }
 
     [[nodiscard]] auto state() const noexcept -> pcg64_dxsm_detail::pcg64_dxsm_state const& { return state_; }
