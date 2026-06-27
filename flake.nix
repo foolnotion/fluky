@@ -54,7 +54,7 @@
             nativeBuildInputs = fluky.nativeBuildInputs ++ (with pkgs; [ clang-tools ]);
 
             buildInputs = fluky.buildInputs
-              ++ (with pkgs; pkgs.lib.optionals pkgs.stdenv.isLinux [ gcc14 gdb hotspot linuxPackages_latest.perf valgrind ])
+              ++ (with pkgs; pkgs.lib.optionals pkgs.stdenv.isLinux [ gcc15 gdb perf valgrind ])
               ++ (with pkgs; pkgs.lib.optionals enableTesting [ catch2_3 hyperfine practrand-rng-test nanobench ]);
           };
         };
