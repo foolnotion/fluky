@@ -78,8 +78,8 @@ public:
     }
     ~romu() noexcept = default;
 
-    romu(romu const&) = delete;
-    auto operator=(romu const&) -> romu& = delete;
+    romu(romu const&) = default;
+    auto operator=(romu const&) -> romu& = default;
 
     romu(romu&&) = default;
     auto operator=(romu&&) noexcept -> romu& = default;

@@ -76,8 +76,8 @@ public:
     }
     ~pcg64_dxsm() noexcept = default;
 
-    pcg64_dxsm(const pcg64_dxsm&) = delete;
-    auto operator=(const pcg64_dxsm&) -> pcg64_dxsm& = delete;
+    pcg64_dxsm(const pcg64_dxsm&) = default;
+    auto operator=(const pcg64_dxsm&) -> pcg64_dxsm& = default;
 
     pcg64_dxsm(pcg64_dxsm&&) = default;
     auto operator=(pcg64_dxsm&&) -> pcg64_dxsm& = default;

@@ -56,8 +56,8 @@ public:
     }
     ~sfc64() noexcept = default;
 
-    sfc64(sfc64 const&) = delete;
-    auto operator=(sfc64 const&) -> sfc64& = delete;
+    sfc64(sfc64 const&) = default;
+    auto operator=(sfc64 const&) -> sfc64& = default;
 
     sfc64(sfc64&&) = default;
     auto operator=(sfc64&&) -> sfc64& = default;

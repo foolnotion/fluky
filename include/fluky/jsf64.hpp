@@ -50,8 +50,8 @@ public:
     }
     ~jsf64() noexcept = default;
 
-    jsf64(const jsf64&) = delete;
-    auto operator=(const jsf64&) -> jsf64& = delete;
+    jsf64(const jsf64&) = default;
+    auto operator=(const jsf64&) -> jsf64& = default;
 
     auto operator=(jsf64&&) -> jsf64& = default;
     jsf64(jsf64&&) = default;

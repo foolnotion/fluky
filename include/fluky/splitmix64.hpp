@@ -47,8 +47,8 @@ public:
     }
     ~splitmix64() = default;
 
-    splitmix64(splitmix64 const&) = delete;
-    auto operator=(splitmix64 const&) -> splitmix64& = delete;
+    splitmix64(splitmix64 const&) = default;
+    auto operator=(splitmix64 const&) -> splitmix64& = default;
 
     splitmix64(splitmix64&&) = default;
     auto operator=(splitmix64&&) -> splitmix64& = default;
